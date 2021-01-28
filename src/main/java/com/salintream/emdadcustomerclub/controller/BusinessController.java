@@ -1,10 +1,10 @@
 package com.salintream.emdadcustomerclub.controller;
 
-import com.salintream.emdadcustomerclub.model.Business;
+import com.salintream.emdadcustomerclub.model.Company;
 import com.salintream.emdadcustomerclub.model.User;
 import com.salintream.emdadcustomerclub.payload.AddNewUserRequest;
 import com.salintream.emdadcustomerclub.payload.ApiResponse;
-import com.salintream.emdadcustomerclub.repository.BusinessRepository;
+import com.salintream.emdadcustomerclub.repository.CompanyRepository;
 import com.salintream.emdadcustomerclub.repository.UserRepository;
 import com.salintream.emdadcustomerclub.security.CurrentUser;
 import com.salintream.emdadcustomerclub.security.JwtTokenProvider;
@@ -32,7 +32,7 @@ public class BusinessController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    BusinessRepository businessRepository;
+    CompanyRepository companyRepository;
     @Autowired
     UserRepository userRepository;
 
@@ -59,7 +59,7 @@ public class BusinessController {
         Optional<User> useropt = userRepository.findByPhonenumber(addNewUserRequest.getPhonenumber());
 
         if (useropt.isPresent()) {
-            useropt.get().getBusinesses().add(new Business(currentUser.getId()));
+            useropt.get().getCompanies().add(new Company(currentUser.getId()));
             userRepository.save(useropt.get());
             return new ResponseEntity(new ApiResponse(true, "Username is already taken!"),
                     HttpStatus.OK);
@@ -71,7 +71,7 @@ public class BusinessController {
                 addNewUserRequest.getUsername(),
                 addNewUserRequest.getPhonenumber());
 
-        user.setBusinesses(Collections.singleton(new Business(currentUser.getId())));
+        user.setCompanies(Collections.singleton(new Company(currentUser.getId())));
 
         User result = userRepository.save(user);
 

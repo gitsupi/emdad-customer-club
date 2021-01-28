@@ -1,15 +1,12 @@
 package com.salintream.emdadcustomerclub.security;
 
-import com.salintream.emdadcustomerclub.model.Business;
+import com.salintream.emdadcustomerclub.model.Company;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UserPrincipal implements UserDetails {
 
@@ -29,13 +26,13 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static UserPrincipal create(Business business) {
+    public static UserPrincipal create(Company company) {
 
 
         return new UserPrincipal(
-                business.getId(),
-                business.getUsername(),
-                business.getPassword(),
+                company.getId(),
+                company.getUsername(),
+                company.getPassword(),
                 null
         );
     }

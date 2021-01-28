@@ -58,10 +58,10 @@ public class User extends DateAudit {
 //    private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_businesses",
+    @JoinTable(name = "user_company",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "business_id"))
-    private Set<Business> businesses = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "company_id"))
+    private Set<Company> companies = new HashSet<>();
 
     public User() {
 

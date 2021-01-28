@@ -1,6 +1,5 @@
 package com.salintream.emdadcustomerclub.repository;
 
-import com.salintream.emdadcustomerclub.model.Business;
 import com.salintream.emdadcustomerclub.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

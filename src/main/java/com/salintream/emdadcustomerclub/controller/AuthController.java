@@ -1,11 +1,11 @@
 package com.salintream.emdadcustomerclub.controller;
 
-import com.salintream.emdadcustomerclub.model.Business;
+import com.salintream.emdadcustomerclub.model.Company;
 import com.salintream.emdadcustomerclub.payload.ApiResponse;
 import com.salintream.emdadcustomerclub.payload.JwtAuthenticationResponse;
 import com.salintream.emdadcustomerclub.payload.LoginRequest;
 import com.salintream.emdadcustomerclub.payload.SignUpRequest;
-import com.salintream.emdadcustomerclub.repository.BusinessRepository;
+import com.salintream.emdadcustomerclub.repository.CompanyRepository;
 import com.salintream.emdadcustomerclub.security.JwtTokenProvider;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    BusinessRepository businessRepository;
+    CompanyRepository companyRepository;
 
 
     @Autowired
@@ -63,20 +63,20 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if (businessRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (companyRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
 
-        // Creating user's account
-        Business user = new Business(signUpRequest.getName(), signUpRequest.getUsername(),
+        // Creating company's account
+        Company company = new Company(signUpRequest.getName(), signUpRequest.getUsername(),
                 signUpRequest.getPassword());
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        company.setPassword(passwordEncoder.encode(company.getPassword()));
 
 
-        Business result = businessRepository.save(user);
+        Company result = companyRepository.save(company);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/businesses/{username}")

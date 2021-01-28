@@ -1,10 +1,9 @@
 package com.salintream.emdadcustomerclub.repository;
 
-import com.salintream.emdadcustomerclub.model.Business;
+import com.salintream.emdadcustomerclub.model.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -12,10 +11,10 @@ import java.util.Optional;
  */
 
 @Repository
-public interface BusinessRepository extends JpaRepository<Business, Long> {
+public interface CompanyRepository extends JpaRepository<Company, Long> {
 
 
-    Optional<Business> findByUsername(String username);
+    Optional<Company> findByUsername(String username);
 
     Boolean existsByUsername(String username);
 

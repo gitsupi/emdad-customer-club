@@ -1,7 +1,7 @@
 package com.salintream.emdadcustomerclub.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.salintream.emdadcustomerclub.model.Business;
+import com.salintream.emdadcustomerclub.model.Company;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,13 +25,13 @@ public class BusinessPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static BusinessPrincipal create(Business business) {
+    public static BusinessPrincipal create(Company company) {
 
 
         return new BusinessPrincipal(
-                business.getId(),
-                business.getUsername(),
-                business.getPassword(),
+                company.getId(),
+                company.getUsername(),
+                company.getPassword(),
                 null
         );
     }

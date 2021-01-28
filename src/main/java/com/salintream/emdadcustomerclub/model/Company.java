@@ -13,14 +13,14 @@ import javax.validation.constraints.Size;
  */
 
 @Entity
-@Table(name = "businesses", uniqueConstraints = {
+@Table(name = "company", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
             "username"
         })
 })
 @Getter
 @Setter
-public class Business extends DateAudit {
+public class Company extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,14 +37,14 @@ public class Business extends DateAudit {
     @Size(max = 100)
     private String password;
 
-    public Business(Long id) {
+    public Company(Long id) {
         this.id = id;
     }
-    public Business() {
+    public Company() {
 
     }
 
-    public Business(@Size(max = 40) String name, @NotBlank @Size(max = 15) String username, @NotBlank @Size(max = 100) String password) {
+    public Company(@Size(max = 40) String name, @NotBlank @Size(max = 15) String username, @NotBlank @Size(max = 100) String password) {
         this.name = name;
         this.username = username;
         this.password = password;

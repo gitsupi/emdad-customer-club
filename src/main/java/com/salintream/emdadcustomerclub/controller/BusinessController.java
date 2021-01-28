@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/business")
@@ -47,7 +48,6 @@ public class BusinessController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public UserPrincipal getCurrentUser(@CurrentUser UserPrincipal currentUser) {
         System.out.println(currentUser);
-
         return currentUser;
     }
 
@@ -56,9 +56,13 @@ public class BusinessController {
     public ResponseEntity<?> addnewuser(@Valid @RequestBody AddNewUserRequest addNewUserRequest,
                                         @CurrentUser UserPrincipal currentUser) {
 
-        if (userRepository.existsByUsername(addNewUserRequest.getUsername())) {
-            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
-                    HttpStatus.BAD_REQUEST);
+        Optional<User> useropt = userRepository.findByPhonenumber(addNewUserRequest.getPhonenumber());
+
+        if (useropt.isPresent()) {
+            useropt.get().getBusinesses().add(new Business(currentUser.getId()));
+            userRepository.save(useropt.get());
+            return new ResponseEntity(new ApiResponse(true, "Username is already taken!"),
+                    HttpStatus.OK);
         }
 
 
@@ -74,6 +78,10 @@ public class BusinessController {
         return ResponseEntity.ok()
                 .body(new ApiResponse(true, "User registered successfully"));
     }
+
+
+
+
 
 
 }

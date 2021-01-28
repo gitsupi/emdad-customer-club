@@ -6,7 +6,6 @@ import com.salintream.emdadcustomerclub.payload.JwtAuthenticationResponse;
 import com.salintream.emdadcustomerclub.payload.LoginRequest;
 import com.salintream.emdadcustomerclub.payload.SignUpRequest;
 import com.salintream.emdadcustomerclub.repository.BusinessRepository;
-import com.salintream.emdadcustomerclub.repository.RoleRepository;
 import com.salintream.emdadcustomerclub.security.JwtTokenProvider;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +36,6 @@ public class AuthController {
     @Autowired
     BusinessRepository businessRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;

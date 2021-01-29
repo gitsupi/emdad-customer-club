@@ -19,13 +19,13 @@ import java.util.Set;
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
-            "username"
+                "username"
         }),
         @UniqueConstraint(columnNames = {
-            "email"
+                "email"
         }),
         @UniqueConstraint(columnNames = {
-            "phonenumber"
+                "phonenumber"
         })
 })
 @Getter
@@ -34,6 +34,8 @@ public class User extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
 
     @Size(max = 40)
     private String firstname;
@@ -52,12 +54,15 @@ public class User extends DateAudit {
     @Size(max = 40)
     @Email
     private String email;
-//
+
+    private Integer score;
+
+
 //    @NotBlank
 //    @Size(max = 100)
 //    private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_company",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "company_id"))
@@ -69,10 +74,13 @@ public class User extends DateAudit {
 
     public User(@Size(max = 40) String firstname, @Size(max = 40) String lastname,
                 @Size(max = 15) String username,
-                @NotBlank @Size(max = 15) String phonenumber) {
+                @NotBlank @Size(max = 15) String phonenumber,
+                @NotBlank int score
+    ) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
         this.phonenumber = phonenumber;
+        this.score = score;
     }
 }

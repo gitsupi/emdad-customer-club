@@ -23,6 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
+    //TODO
     public UserDetails loadUserByUsername(String usernameOrEmail)
             throws UsernameNotFoundException {
         // Let people login with either username or email
@@ -35,6 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Transactional
+    //TODO
     public UserDetails loadUserById(Long id) {
         Company company = companyRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("User", "id", id)

@@ -25,6 +25,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 
+/**
+ * UriComponentsBuilder with additional static factory methods to create links
+ *
+ * @author Abolfazl Ghahremani
+ * @since 0
+ */
+
 @RestController
 @RequestMapping("/api/auth")
 @Api(value = "/api/auth", description = "Customer Profile", produces = "application/json")

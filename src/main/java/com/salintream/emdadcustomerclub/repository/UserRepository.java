@@ -1,6 +1,7 @@
 package com.salintream.emdadcustomerclub.repository;
 
 import com.salintream.emdadcustomerclub.model.User;
+import com.salintream.emdadcustomerclub.model.UserEventLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByPhonenumber(String phonenumber);
     //todo
 //    Optional<User> findByPhonenumberAndCompanies(String phonenumber, List<Company> companies);
+
 
     Optional<User> findByUsernameOrEmail(String username, String email);
 

@@ -2,6 +2,7 @@ package com.salintream.emdadcustomerclub.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.salintream.emdadcustomerclub.model.audit.DateAudit;
 import lombok.Data;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -24,7 +25,7 @@ import javax.validation.constraints.Size;
 })
 @Data
 @Accessors(chain = true)
-public class CoEvent {
+public class CoEvent  extends DateAudit {
 
     @Id
     @JsonIgnore
@@ -36,6 +37,7 @@ public class CoEvent {
 //    private Long coId;
 
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "co_id", nullable = false)
     private Company company;

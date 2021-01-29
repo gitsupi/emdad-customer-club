@@ -27,12 +27,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/api/business")
-@Api(value = "/api/business", description = "Customer Profile", produces = "application/json")
+@Api(value = "/api/business", description = "client(company) functionalities such as adding user , event , transactions and use them to score users", produces = "application/json")
 public class BusinessController {
 
 
@@ -59,14 +60,14 @@ public class BusinessController {
     @Autowired
     JwtTokenProvider tokenProvider;
 
-    @GetMapping("/user/me")
+    @GetMapping("/company/me")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public UserPrincipal getCurrentUser(@CurrentUser UserPrincipal currentUser) {
         System.out.println(currentUser);
         return currentUser;
     }
 
-    @PostMapping("/addnewuser")
+    @PostMapping("/user/add")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> addnewuser(@Valid @RequestBody AddNewUserRequest addNewUserRequest,
                                         @CurrentUser UserPrincipal currentUser) {
@@ -150,12 +151,24 @@ public class BusinessController {
         user.setScore(coEvent.getScoreValue() + beforescore);
         userRepository.save(user);
 
-        //logging in system events used by users of companies
-        userEventLogRepository.save(new UserEventLog(coEvent.getId(),currentUser.getId(), user.getPhonenumber(), coEvent.getScoreValue()));
+        //logging  system events used by users of companies
+        userEventLogRepository.save(new UserEventLog(coEvent.getId(),
+               user, coEvent.getScoreValue()));
 
         return ResponseEntity.ok().body(new ApiResponse(true, "score added"));
 
     }
 
 
-}
+    @GetMapping("/dynamictest")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
+    public ResponseEntity<?> test(@CurrentUser UserPrincipal currentUser) {
+
+        User byUsername = userRepository.findByPhonenumber("09351844321").get();
+        return ResponseEntity.ok(byUsername.getEventLogs());
+
+
+    }
+
+
+    }

@@ -1,0 +1,56 @@
+package com.salinteam.emdadcustomerclub.model;
+
+import com.salinteam.emdadcustomerclub.model.audit.DateAudit;
+import com.sun.istack.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+@Entity
+@Table(name = "group_level")
+@Getter
+@Setter
+public class GroupLevel extends DateAudit {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Group_Level_SEQ")
+    @SequenceGenerator(name = "Group_Level_SEQ", sequenceName = "Group_Level_SEQ", allocationSize = 1)
+    private Long id;
+
+    @NotNull
+    private String levelname;
+
+    @NotNull
+    private Long score;
+
+
+    public GroupLevel(Long grouplevel_id) {
+        this.id = grouplevel_id;
+    }
+
+    public GroupLevel() {
+
+    }
+
+    @OneToMany(
+            mappedBy = "groupLevel",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            orphanRemoval = true
+    )
+//    @Fetch(FetchMode.SELECT)
+//    @BatchSize(size = 30)
+    private List<User> users;
+
+//    @OneToMany
+//    private Set<User> items;
+
+
+}

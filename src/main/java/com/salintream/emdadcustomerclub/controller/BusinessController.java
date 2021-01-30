@@ -215,12 +215,6 @@ public class BusinessController {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "phonenumber", userId));
 
 
-        user.getCompanies().forEach(company -> {
-            System.out.println(company.getId());
-            System.out.println(company.getUsername());
-            System.out.println(company.getName());
-        });
-
         Long price = transactionUsingRequest.getPrice();
 
         long scorable = price / coTransaction.getUnitprice();

@@ -8,7 +8,7 @@
         <version>2.2.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.salintream</groupId>
+    <groupId>com.salinteam</groupId>
     <artifactId>emdad-customer-club</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>emdad-customer-club</name>

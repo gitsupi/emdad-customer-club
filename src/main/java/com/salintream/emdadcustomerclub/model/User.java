@@ -86,6 +86,18 @@ public class User extends DateAudit {
 
 
 
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            orphanRemoval = true
+    )
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 30)
+    private List<UserTransactionLog> transactionLogs = new ArrayList<>();
+
+
+
     public User() {
 
     }

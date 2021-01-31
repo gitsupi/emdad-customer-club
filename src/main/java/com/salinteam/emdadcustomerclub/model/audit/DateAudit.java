@@ -20,10 +20,10 @@ import java.time.Instant;
 public abstract class DateAudit implements Serializable {
 
     @CreatedDate
-//    @JsonIgnore
+    @JsonIgnore
     private Instant createdAt;
 
-//    @JsonIgnore
+    @JsonIgnore
     @LastModifiedDate
     private Instant updatedAt;
 

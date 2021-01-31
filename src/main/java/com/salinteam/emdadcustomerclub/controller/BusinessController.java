@@ -75,12 +75,33 @@ public class BusinessController {
                                         @CurrentUser UserPrincipal currentUser) {
 
         Optional<User> useropt = userRepository.findByPhonenumber(addNewUserRequest.getPhonenumber());
-        Optional<User> emailopt = userRepository.findByEmail(addNewUserRequest.getEmail());
-        boolean usernameopt = userRepository.existsByUsername(addNewUserRequest.getUsername());
-        Long grouplevel_id = addNewUserRequest.getGrouplevel_id();
-        GroupLevel groupLevel0 = groupLevelRepository
-                .findGroupLevelById(grouplevel_id)
-                .orElseThrow(() -> new ResourceNotFoundException("GroupLevel", "grouplevel_id", grouplevel_id));
+
+        String email = addNewUserRequest.getEmail();
+        if (email != null) {
+            if (!email.isEmpty()) {
+                Optional<User> emailopt = userRepository.findByEmail(email);
+                if (emailopt.isPresent()) {
+                    return new ResponseEntity(new ApiResponse(true, "Email is already taken!"),
+                            HttpStatus.OK);
+                }
+            }
+        }
+
+
+        String username = addNewUserRequest.getUsername();
+        if (username != null)
+            if (!username.isEmpty())
+                if (userRepository.existsByUsername(username)) {
+                    return new ResponseEntity(new ApiResponse(true, "Username is already taken!"),
+                            HttpStatus.OK);
+                }
+
+
+//        Long grouplevel_id = addNewUserRequest.getGrouplevel_id();
+        long id = 1L;
+        GroupLevel groupLevel = groupLevelRepository
+                .findGroupLevelById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("GroupLevel", "grouplevel_id", id));
 
 
         if (useropt.isPresent()) {
@@ -94,29 +115,18 @@ public class BusinessController {
 
             companies.add(new Company(currentUser.getId()));
             userRepository.save(useropt.get());
-            return new ResponseEntity(new ApiResponse(true, "Username is already taken!"),
-                    HttpStatus.OK);
-        }
-
-        if (emailopt.isPresent()) {
-            return new ResponseEntity(new ApiResponse(true, "Email is already taken!"),
-                    HttpStatus.OK);
-        }
-
-        if (usernameopt) {
-            return new ResponseEntity(new ApiResponse(true, "Username is already taken!"),
+            return new ResponseEntity(new ApiResponse(true, "User registered successfully"),
                     HttpStatus.OK);
         }
 
 
         User user = new User(addNewUserRequest.getFirstname(),
                 addNewUserRequest.getLastname(),
-                addNewUserRequest.getUsername(),
+                username,
                 addNewUserRequest.getPhonenumber(),
-                addNewUserRequest.getEmail(),
-                groupLevel0.getScore().intValue());
+                email,
+                groupLevel.getScore().intValue());
 
-        GroupLevel groupLevel = new GroupLevel(grouplevel_id);
         user.setGroupLevel(groupLevel);
 
 
@@ -248,7 +258,8 @@ public class BusinessController {
         userTransactionLogRepository.save(new UserTransactionLog(coTransaction.getId(),
                 user, ((int) scorable), price));
 
-        return ResponseEntity.ok().body(new ApiResponse(true, "score added"));
+        return ResponseEntity.ok()
+                .body(new ApiResponse(true, "score added"));
 
     }
 

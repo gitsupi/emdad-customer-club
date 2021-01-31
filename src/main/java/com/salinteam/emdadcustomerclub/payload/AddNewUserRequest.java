@@ -1,5 +1,7 @@
 package com.salinteam.emdadcustomerclub.payload;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
@@ -28,6 +30,7 @@ public class AddNewUserRequest {
 
     @NotBlank
     @Size(max = 15)
+    @ApiModelProperty(required = true)
     private String phonenumber;
 
     @NaturalId
@@ -35,6 +38,5 @@ public class AddNewUserRequest {
     @Email
     private String email;
 
-    private Long grouplevel_id;
 
 }

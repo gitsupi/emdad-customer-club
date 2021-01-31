@@ -1,5 +1,6 @@
 package com.salinteam.emdadcustomerclub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.salinteam.emdadcustomerclub.model.audit.DateAudit;
 import lombok.Getter;
 import lombok.Setter;

@@ -26,8 +26,13 @@ public class GroupLevel extends DateAudit {
     @NotNull
     private String levelName;
 
+//    @NotNull
+//    private Long score;
     @NotNull
-    private Long score;
+    private Long minscore;
+
+    @NotNull
+    private Long maxscore;
 
 
     public GroupLevel(Long grouplevel_id) {

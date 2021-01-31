@@ -125,7 +125,7 @@ public class BusinessController {
                 username,
                 addNewUserRequest.getPhonenumber(),
                 email,
-                groupLevel.getScore().intValue());
+                groupLevel.getMinscore().intValue());
 
         user.setGroupLevel(groupLevel);
 
@@ -242,12 +242,14 @@ public class BusinessController {
 
         CoTransaction coTransaction = coTransactionRepository.findByUsernameAndCompanyAndUserLevelId(transId,
                 new Company(currentUser.getId()), groupLevel.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Transaction", "transId", transId));
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction or with grouplevel of user", "transId", transId  ));
 
 
 
 //        GroupLevel groupLevel = groupLevelRepository.findGroupLevelById(userLevelId)
 //                .orElseThrow(() -> new ResourceNotFoundException("groupLevel", "groupLevel", userLevelId));
+
+
 
 
         Long price = transactionUsingRequest.getPrice();
@@ -257,6 +259,12 @@ public class BusinessController {
         Integer beforescore = user.getScore();
 
         user.setScore((int) (scorable + beforescore));
+
+        GroupLevel groupLevel1 = groupLevelRepository.findByScore(user.getScore().longValue())
+                .orElseThrow(() -> new ResourceNotFoundException("GroupLevel", "score", transId));
+
+
+        user.setGroupLevel(groupLevel1);
 
         userRepository.save(user);
 

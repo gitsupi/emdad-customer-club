@@ -1,5 +1,6 @@
 package com.salinteam.emdadcustomerclub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.salinteam.emdadcustomerclub.model.audit.DateAudit;
 import com.sun.istack.NotNull;
 import lombok.Getter;
@@ -20,18 +21,20 @@ import java.util.Set;
 public class GroupLevel extends DateAudit {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
     private String levelName;
 
-//    @NotNull
+    //    @NotNull
 //    private Long score;
     @NotNull
+    @JsonIgnore
     private Long minscore;
 
     @NotNull
+    @JsonIgnore
     private Long maxscore;
 
 
@@ -49,12 +52,10 @@ public class GroupLevel extends DateAudit {
             fetch = FetchType.EAGER,
             orphanRemoval = true
     )
+    @JsonIgnore
 //    @Fetch(FetchMode.SELECT)
 //    @BatchSize(size = 30)
     private List<User> users;
-
-//    @OneToMany
-//    private Set<User> items;
 
 
 }

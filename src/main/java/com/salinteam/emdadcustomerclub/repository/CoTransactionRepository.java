@@ -17,7 +17,9 @@ public interface CoTransactionRepository extends JpaRepository<CoTransaction, Lo
 
     List<CoTransaction> findByUsername(String username);
 
-    Optional<CoTransaction> findByUsernameAndCompany(String username, Company company);
+    List<CoTransaction> findByUsernameAndCompany(String username, Company company);
+
+    Optional<CoTransaction> findByUsernameAndCompanyAndUserLevelId(String username, Company company, Long userLevelId);
 
     Boolean existsByUsername(String username);
 

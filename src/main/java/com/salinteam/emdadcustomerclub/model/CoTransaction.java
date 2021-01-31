@@ -44,6 +44,7 @@ public class CoTransaction extends DateAudit {
 
     private Long unitprice;
 
+    //todo
     private Long userLevelId;
 
 

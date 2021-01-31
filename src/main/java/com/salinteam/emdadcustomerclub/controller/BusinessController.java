@@ -230,18 +230,24 @@ public class BusinessController {
     public ResponseEntity<?> useTrans(@Valid @RequestBody TransactionUsingRequest transactionUsingRequest,
                                       @CurrentUser UserPrincipal currentUser) {
 
-
-        String transId = transactionUsingRequest.getTransId();
-        CoTransaction coTransaction = coTransactionRepository.findByUsernameAndCompany(transId,
-                new Company(currentUser.getId()))
-                .orElseThrow(() -> new ResourceNotFoundException("Transaction", "transId", transId));
-
-
         String userId = transactionUsingRequest.getUserId();
-
         //todo update this way
         User user = userRepository.findByPhonenumber(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "phonenumber", userId));
+
+        GroupLevel groupLevel = user.getGroupLevel();
+
+
+        String transId = transactionUsingRequest.getTransId();
+
+        CoTransaction coTransaction = coTransactionRepository.findByUsernameAndCompanyAndUserLevelId(transId,
+                new Company(currentUser.getId()), groupLevel.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction", "transId", transId));
+
+
+
+//        GroupLevel groupLevel = groupLevelRepository.findGroupLevelById(userLevelId)
+//                .orElseThrow(() -> new ResourceNotFoundException("groupLevel", "groupLevel", userLevelId));
 
 
         Long price = transactionUsingRequest.getPrice();

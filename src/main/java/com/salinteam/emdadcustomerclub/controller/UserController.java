@@ -20,12 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @Autowired
+
     UserRepository userRepository;
 
 
     @PostMapping("/user/info/{phonenumber}")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
-    public ResponseEntity<?> addnewuser(@PathVariable String phonenumber,
+    public ResponseEntity<?> userinfo(@PathVariable String phonenumber,
                                         @CurrentUser UserPrincipal currentUser) {
 
         //todo update this way

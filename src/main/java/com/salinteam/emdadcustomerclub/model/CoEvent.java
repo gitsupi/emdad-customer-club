@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 
 @Table(name = "coevent", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
-                "username","co_id"
+                "event_id","co_id","grouplevel_id"
         })
 })
 @Data
@@ -43,8 +43,9 @@ public class CoEvent  extends DateAudit {
 
 
     @NotBlank
-    @Size(max = 15)
-    private String username;
+    @Size(max = 50)
+    @Column(name = "event_id")
+    private String eventId;
 
 
     @Size(max = 40)
@@ -52,6 +53,11 @@ public class CoEvent  extends DateAudit {
 
 
     private int scoreValue;
+
+
+    @ManyToOne
+    @JoinColumn(name="grouplevel_id", nullable=false)
+    private GroupLevel groupLevel;
 
 
 

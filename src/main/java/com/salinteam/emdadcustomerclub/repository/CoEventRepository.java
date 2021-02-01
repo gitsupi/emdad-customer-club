@@ -15,11 +15,7 @@ import java.util.Optional;
 @Repository
 public interface CoEventRepository extends JpaRepository<CoEvent, Long> {
 
+    Optional<CoEvent> findByEventIdAndCompany(String eventId, Company company);
 
-    List<CoEvent> findByUsername(String username);
-
-    Optional<CoEvent> findByUsernameAndCompany(String username, Company company);
-
-    Boolean existsByUsername(String username);
 
 }

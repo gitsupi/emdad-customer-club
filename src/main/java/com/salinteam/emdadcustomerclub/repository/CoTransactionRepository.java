@@ -14,13 +14,6 @@ import java.util.Optional;
 @org.springframework.stereotype.Repository
 public interface CoTransactionRepository extends JpaRepository<CoTransaction, Long> {
 
-
-    List<CoTransaction> findByUsername(String username);
-
-    List<CoTransaction> findByUsernameAndCompany(String username, Company company);
-
-    Optional<CoTransaction> findByUsernameAndCompanyAndUserLevelId(String username, Company company, Long userLevelId);
-
-    Boolean existsByUsername(String username);
+    Optional<CoTransaction> findByTransactionIdAndCompanyAndUserGroupLevelId(String transId, Company company, Long userLevelId);
 
 }

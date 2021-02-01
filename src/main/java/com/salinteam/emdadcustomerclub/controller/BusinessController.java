@@ -87,7 +87,6 @@ public class BusinessController {
             }
         }
 
-
         String username = addNewUserRequest.getUsername();
         if (username != null)
             if (!username.isEmpty())
@@ -163,7 +162,7 @@ public class BusinessController {
                                       @CurrentUser UserPrincipal currentUser) {
 
         String eventId = eventUsingRequest.getEventId();
-        CoEvent coEvent = coEventRepository.findByUsernameAndCompany(eventId,
+        CoEvent coEvent = coEventRepository.findByEventIdAndCompany(eventId,
                 new Company(currentUser.getId()))
                 .orElseThrow(() -> new ResourceNotFoundException("event", "username", eventId));
 
@@ -184,6 +183,12 @@ public class BusinessController {
 
         Integer beforescore = user.getScore();
         user.setScore(coEvent.getScoreValue() + beforescore);
+        GroupLevel groupLevel1 = groupLevelRepository.findByScore(user.getScore().longValue())
+                .orElseThrow(() -> new ResourceNotFoundException("GroupLevel",
+                        "score", eventId));
+
+
+        user.setGroupLevel(groupLevel1);
         userRepository.save(user);
 
         //logging  system events used by users of companies
@@ -240,7 +245,7 @@ public class BusinessController {
 
         String transId = transactionUsingRequest.getTransId();
 
-        CoTransaction coTransaction = coTransactionRepository.findByUsernameAndCompanyAndUserLevelId(transId,
+        CoTransaction coTransaction = coTransactionRepository.findByTransactionIdAndCompanyAndUserGroupLevelId(transId,
                 new Company(currentUser.getId()), groupLevel.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Transaction or with grouplevel of user", "transId", transId  ));
 

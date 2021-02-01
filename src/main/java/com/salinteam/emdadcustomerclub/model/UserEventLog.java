@@ -35,7 +35,6 @@ public class UserEventLog extends DateAudit {
 
     public UserEventLog(Long eventId, User user, int score) {
         this.eventId = eventId;
-
         this.user = user;
         this.score = score;
     }

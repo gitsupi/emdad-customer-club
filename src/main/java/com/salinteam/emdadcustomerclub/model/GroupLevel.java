@@ -57,5 +57,14 @@ public class GroupLevel extends DateAudit {
 //    @BatchSize(size = 30)
     private List<User> users;
 
+    @OneToMany(
+            mappedBy = "groupLevel",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
+    )
+    @JsonIgnore
+    private List<CoEvent> coEvents;
+
 
 }

@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "cotransaction", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
-                "username", "co_id"
+                "transaction_id", "co_id"
         })
 })
 @Data
@@ -37,7 +37,8 @@ public class CoTransaction extends DateAudit {
 
     @NotBlank
     @Size(max = 15)
-    private String username;
+    @Column(name = "transaction_id")
+    private String transactionId;
 
     @Size(max = 40)
     private String name;
@@ -45,12 +46,12 @@ public class CoTransaction extends DateAudit {
     private Long unitprice;
 
     //todo
-    private Long userLevelId;
+    private Long userGroupLevelId;
 
 
-    public CoTransaction(Company company, @NotBlank @Size(max = 15) String username, Long unitprice) {
+    public CoTransaction(Company company, @NotBlank @Size(max = 15) String transactionId, Long unitprice) {
         this.company = company;
-        this.username = username;
+        this.transactionId = transactionId;
         this.unitprice = unitprice;
     }
 

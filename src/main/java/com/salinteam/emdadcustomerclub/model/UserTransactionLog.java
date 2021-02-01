@@ -23,7 +23,9 @@ public class UserTransactionLog extends DateAudit {
     private Long id;
 
 
-    private Long transId;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "trans_id", nullable = false)
+    private CoTransaction coTransaction;
 
 
     @JsonIgnore
@@ -35,8 +37,8 @@ public class UserTransactionLog extends DateAudit {
 
     private Long price;
 
-    public UserTransactionLog(Long transId, User user, int score,Long price) {
-        this.transId = transId;
+    public UserTransactionLog(CoTransaction coTransaction, User user, int score,Long price) {
+        this.coTransaction = coTransaction;
         this.user = user;
         this.score = score;
         this.price = price;

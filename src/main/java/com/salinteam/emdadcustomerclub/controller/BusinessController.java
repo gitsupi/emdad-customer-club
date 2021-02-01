@@ -192,7 +192,7 @@ public class BusinessController {
         userRepository.save(user);
 
         //logging  system events used by users of companies
-        userEventLogRepository.save(new UserEventLog(coEvent.getId(),
+        userEventLogRepository.save(new UserEventLog(coEvent,
                 user, coEvent.getScoreValue()));
 
         return ResponseEntity.ok().body(new ApiResponse(true, "score added"));
@@ -224,7 +224,7 @@ public class BusinessController {
                     "transaction added successfully"));
 
         } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.badRequest().body(new ApiResponse(false, "username duplicated"));
+            return ResponseEntity.badRequest().body(new ApiResponse(false, "transactionId duplicated"));
 
         }
     }
@@ -245,8 +245,8 @@ public class BusinessController {
 
         String transId = transactionUsingRequest.getTransId();
 
-        CoTransaction coTransaction = coTransactionRepository.findByTransactionIdAndCompanyAndUserGroupLevelId(transId,
-                new Company(currentUser.getId()), groupLevel.getId())
+        CoTransaction coTransaction = coTransactionRepository.findByTransactionIdAndCompanyAndGroupLevel(transId,
+                new Company(currentUser.getId()), groupLevel)
                 .orElseThrow(() -> new ResourceNotFoundException("Transaction or with grouplevel of user", "transId", transId  ));
 
 
@@ -274,7 +274,7 @@ public class BusinessController {
         userRepository.save(user);
 
         //logging  transactions used by users of companies
-        userTransactionLogRepository.save(new UserTransactionLog(coTransaction.getId(),
+        userTransactionLogRepository.save(new UserTransactionLog(coTransaction,
                 user, ((int) scorable), price));
 
         return ResponseEntity.ok()

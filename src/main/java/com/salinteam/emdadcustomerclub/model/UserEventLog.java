@@ -22,8 +22,9 @@ public class UserEventLog extends DateAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    private Long eventId;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "co_event_id", nullable = false)
+    private CoEvent coEvent;
 
 
     @JsonIgnore
@@ -33,8 +34,8 @@ public class UserEventLog extends DateAudit {
 
     private int score;
 
-    public UserEventLog(Long eventId, User user, int score) {
-        this.eventId = eventId;
+    public UserEventLog( CoEvent coEvent, User user, int score) {
+        this.coEvent = coEvent;
         this.user = user;
         this.score = score;
     }

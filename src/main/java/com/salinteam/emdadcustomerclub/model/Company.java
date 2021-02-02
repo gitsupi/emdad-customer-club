@@ -11,7 +11,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Abolfazl Ghahremani(Joobin)  on 01/27/21.
@@ -41,6 +43,14 @@ public class Company extends DateAudit {
     @NotBlank
     @Size(max = 100)
     private String password;
+
+    @ManyToMany
+    @JoinTable(
+            name = "company_role",
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    @BatchSize(size = 20)
+    private Set<Role> roles = new HashSet<>();
 
 
     @OneToMany(

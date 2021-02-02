@@ -18,6 +18,7 @@ public interface UserEventLogRepository extends JpaRepository<UserEventLog, Long
     Optional<UserEventLog> findByUser(User user);
 
     Optional<UserEventLog> findUserEventLogByUser_Phonenumber(String phonenumber);
+
     List<UserEventLog> findUserEventLogsByUser_Phonenumber(String phonenumber);
 
 }

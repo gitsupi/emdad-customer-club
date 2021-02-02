@@ -2,6 +2,7 @@ package com.salinteam.emdadcustomerclub.repository;
 
 import com.salinteam.emdadcustomerclub.model.CoTransaction;
 import com.salinteam.emdadcustomerclub.model.Company;
+import com.salinteam.emdadcustomerclub.model.GroupLevel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,6 +15,6 @@ import java.util.Optional;
 @org.springframework.stereotype.Repository
 public interface CoTransactionRepository extends JpaRepository<CoTransaction, Long> {
 
-    Optional<CoTransaction> findByTransactionIdAndCompanyAndUserGroupLevelId(String transId, Company company, Long userLevelId);
+    Optional<CoTransaction> findByTransactionIdAndCompanyAndGroupLevel(String transId, Company company, GroupLevel userLevelId);
 
 }

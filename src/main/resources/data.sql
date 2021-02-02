@@ -1,3 +1,7 @@
+INSERT IGNORE INTO role(name) VALUES('ROLE_COMPANY');
+INSERT IGNORE INTO role(name) VALUES('ROLE_ADMIN_GL');
+
+
 insert ignore into group_level (id, created_at, updated_at, minscore, maxscore, level_name)
 values (1, '2021-01-30 19:55:48', '2021-01-30 19:55:48', 0, 30, '2آبی');
 insert ignore into group_level (id, created_at, updated_at, minscore, maxscore, level_name)

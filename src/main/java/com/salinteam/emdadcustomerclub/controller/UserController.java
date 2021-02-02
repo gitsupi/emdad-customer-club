@@ -1,6 +1,5 @@
 package com.salinteam.emdadcustomerclub.controller;
 
-import com.google.gson.Gson;
 import com.salinteam.emdadcustomerclub.exception.ResourceNotFoundException;
 import com.salinteam.emdadcustomerclub.model.User;
 import com.salinteam.emdadcustomerclub.model.UserEventLog;
@@ -10,7 +9,7 @@ import com.salinteam.emdadcustomerclub.repository.UserEventLogRepository;
 import com.salinteam.emdadcustomerclub.repository.UserRepository;
 import com.salinteam.emdadcustomerclub.repository.UserTransactionLogRepository;
 import com.salinteam.emdadcustomerclub.security.CurrentUser;
-import com.salinteam.emdadcustomerclub.security.UserPrincipal;
+import com.salinteam.emdadcustomerclub.security.CompanyPrincipal;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by Abolfazl Ghahremani(Joobin)  on 1/31/2021 , 9:14 PM.
@@ -42,7 +40,7 @@ public class UserController {
     @PostMapping("/user/info/{phonenumber}")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> userinfo(@PathVariable String phonenumber,
-                                        @CurrentUser UserPrincipal currentUser) {
+                                        @CurrentUser CompanyPrincipal currentUser) {
 
         //todo update this way
         User user = userRepository.findByPhonenumber(phonenumber)

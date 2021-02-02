@@ -9,7 +9,7 @@ import com.salinteam.emdadcustomerclub.payload.TransactionUsingRequest;
 import com.salinteam.emdadcustomerclub.repository.*;
 import com.salinteam.emdadcustomerclub.security.CurrentUser;
 import com.salinteam.emdadcustomerclub.security.JwtTokenProvider;
-import com.salinteam.emdadcustomerclub.security.UserPrincipal;
+import com.salinteam.emdadcustomerclub.security.CompanyPrincipal;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,7 @@ public class BusinessController {
 
     @GetMapping("/company/me")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
-    public UserPrincipal getCurrentUser(@CurrentUser UserPrincipal currentUser) {
+    public CompanyPrincipal getCurrentUser(@CurrentUser CompanyPrincipal currentUser) {
         System.out.println(currentUser);
         return currentUser;
     }
@@ -72,7 +72,7 @@ public class BusinessController {
     @PostMapping("/user/add")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> addnewuser(@Valid @RequestBody AddNewUserRequest addNewUserRequest,
-                                        @CurrentUser UserPrincipal currentUser) {
+                                        @CurrentUser CompanyPrincipal currentUser) {
 
         Optional<User> useropt = userRepository.findByPhonenumber(addNewUserRequest.getPhonenumber());
 
@@ -142,7 +142,7 @@ public class BusinessController {
     @PostMapping("/event/add")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> addnewevent(@Valid @RequestBody CoEvent coEvent,
-                                         @CurrentUser UserPrincipal currentUser) {
+                                         @CurrentUser CompanyPrincipal currentUser) {
 
         try {
             Company company = new Company();
@@ -159,7 +159,7 @@ public class BusinessController {
     @PostMapping("/event/use")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> useevent(@Valid @RequestBody EventUsingRequest eventUsingRequest,
-                                      @CurrentUser UserPrincipal currentUser) {
+                                      @CurrentUser CompanyPrincipal currentUser) {
 
 
 
@@ -203,7 +203,7 @@ public class BusinessController {
 
     @GetMapping("/dynamictest")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
-    public ResponseEntity<?> test(@CurrentUser UserPrincipal currentUser) {
+    public ResponseEntity<?> test(@CurrentUser CompanyPrincipal currentUser) {
 
         User byUsername = userRepository.findByPhonenumber("09351844321").get();
         return ResponseEntity.ok(byUsername.getEventLogs());
@@ -215,7 +215,7 @@ public class BusinessController {
     @PostMapping("/transaction/add")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> addnewTrans(@Valid @RequestBody CoTransaction coTransaction,
-                                         @CurrentUser UserPrincipal currentUser) {
+                                         @CurrentUser CompanyPrincipal currentUser) {
 
         try {
             Company company = new Company();
@@ -234,7 +234,7 @@ public class BusinessController {
     @PostMapping("/transaction/use")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> useTrans(@Valid @RequestBody TransactionUsingRequest transactionUsingRequest,
-                                      @CurrentUser UserPrincipal currentUser) {
+                                      @CurrentUser CompanyPrincipal currentUser) {
 
         String userId = transactionUsingRequest.getUserId();
         //todo update this way

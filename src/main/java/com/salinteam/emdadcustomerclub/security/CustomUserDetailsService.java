@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                         new UsernameNotFoundException("Busiiness Unit not found with username or ;; : " + usernameOrEmail)
                 );
 
-        return UserPrincipal.create(company);
+        return CompanyPrincipal.create(company);
     }
 
     @Transactional
@@ -42,6 +42,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             () -> new ResourceNotFoundException("User", "id", id)
         );
 
-        return UserPrincipal.create(company);
+        return CompanyPrincipal.create(company);
     }
 }

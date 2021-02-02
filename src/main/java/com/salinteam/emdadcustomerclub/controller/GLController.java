@@ -1,12 +1,9 @@
 package com.salinteam.emdadcustomerclub.controller;
 
 
-import com.salinteam.emdadcustomerclub.model.RoleName;
-import com.salinteam.emdadcustomerclub.payload.AddGrouplevelRequest;
-import com.salinteam.emdadcustomerclub.payload.AddNewUserRequest;
 import com.salinteam.emdadcustomerclub.payload.GLRequest;
 import com.salinteam.emdadcustomerclub.security.CurrentUser;
-import com.salinteam.emdadcustomerclub.security.UserPrincipal;
+import com.salinteam.emdadcustomerclub.security.CompanyPrincipal;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +24,18 @@ public class GLController {
 
     @PostMapping("/gls/add")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
-//    @PreAuthorize("hasRole('ADMIN_GL')")
+    @PreAuthorize("hasRole('ADMIN_GL')")
     public ResponseEntity<?> addGroupLeves(@Valid @RequestBody List<GLRequest> glRequests,
-                                        @CurrentUser UserPrincipal currentUser) {
+                                        @CurrentUser CompanyPrincipal currentUser) {
+
+        for (int i = 0; i < glRequests.size()-1; i++) {
+            GLRequest glRequest = glRequests.get(i);
+            GLRequest nextglRequest = glRequests.get(i+1);
+            Long score = glRequest.getScore();
+            Long nextscore = glRequest.getScore();
+
+        }
+
 
         return null;
     }

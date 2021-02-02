@@ -1,6 +1,6 @@
 package com.salinteam.emdadcustomerclub.config;
 
-import com.salinteam.emdadcustomerclub.security.UserPrincipal;
+import com.salinteam.emdadcustomerclub.security.CompanyPrincipal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -33,8 +33,8 @@ class SpringSecurityAuditAwareImpl implements AuditorAware<Long> {
             return Optional.empty();
         }
 
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        CompanyPrincipal companyPrincipal = (CompanyPrincipal) authentication.getPrincipal();
 
-        return Optional.ofNullable(userPrincipal.getId());
+        return Optional.ofNullable(companyPrincipal.getId());
     }
 }

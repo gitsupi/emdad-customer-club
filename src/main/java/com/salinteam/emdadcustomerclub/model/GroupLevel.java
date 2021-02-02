@@ -25,6 +25,7 @@ public class GroupLevel extends DateAudit {
     private Long id;
 
     @NotNull
+    @JsonIgnore
     private String levelName;
 
     //    @NotNull

@@ -161,17 +161,18 @@ public class BusinessController {
     public ResponseEntity<?> useevent(@Valid @RequestBody EventUsingRequest eventUsingRequest,
                                       @CurrentUser UserPrincipal currentUser) {
 
-        String eventId = eventUsingRequest.getEventId();
-        CoEvent coEvent = coEventRepository.findByEventIdAndCompany(eventId,
-                new Company(currentUser.getId()))
-                .orElseThrow(() -> new ResourceNotFoundException("event", "username", eventId));
 
 
         String userId = eventUsingRequest.getUserId();
 
         //todo update this way
         User user = userRepository.findByPhonenumber(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "phonenumber", userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User", "phonenumber", userId));     String eventId = eventUsingRequest.getEventId();
+
+        CoEvent coEvent = coEventRepository.findByEventIdAndCompanyAndGroupLevel(eventId,
+                new Company(currentUser.getId()), user.getGroupLevel())
+                .orElseThrow(() -> new ResourceNotFoundException("event", "username", eventId));
+
 
 
         user.getCompanies().forEach(company -> {

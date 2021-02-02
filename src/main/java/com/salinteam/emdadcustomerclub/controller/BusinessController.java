@@ -247,7 +247,7 @@ public class BusinessController {
 
         CoTransaction coTransaction = coTransactionRepository.findByTransactionIdAndCompanyAndGroupLevel(transId,
                 new Company(currentUser.getId()), groupLevel)
-                .orElseThrow(() -> new ResourceNotFoundException("Transaction or with grouplevel of user", "transId", transId  ));
+                .orElseThrow(() -> new ResourceNotFoundException("The User Could Not Operate At This Level. ", "transId", transId  ));
 
 
 

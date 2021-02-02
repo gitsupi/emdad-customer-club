@@ -1,6 +1,10 @@
 package com.salinteam.emdadcustomerclub.controller;
 
+import com.salinteam.emdadcustomerclub.exception.AppException;
+import com.salinteam.emdadcustomerclub.model.Role;
+import com.salinteam.emdadcustomerclub.model.RoleName;
 import com.salinteam.emdadcustomerclub.repository.CompanyRepository;
+import com.salinteam.emdadcustomerclub.repository.RoleRepository;
 import com.salinteam.emdadcustomerclub.security.JwtTokenProvider;
 import com.salinteam.emdadcustomerclub.model.Company;
 import com.salinteam.emdadcustomerclub.payload.ApiResponse;
@@ -24,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Collections;
 
 /**
  * UriComponentsBuilder with additional static factory methods to create links
@@ -43,10 +48,11 @@ public class AuthController {
     @Autowired
     CompanyRepository companyRepository;
 
+    @Autowired
+    RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
-
 
     @Autowired
     JwtTokenProvider tokenProvider;
@@ -74,14 +80,16 @@ public class AuthController {
             return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
-
-
         // Creating company's account
         Company company = new Company(signUpRequest.getName(), signUpRequest.getUsername(),
                 signUpRequest.getPassword());
 
         company.setPassword(passwordEncoder.encode(company.getPassword()));
 
+        Role userRole = roleRepository.findByName(RoleName.ROLE_COMPANY)
+                .orElseThrow(() -> new AppException("Company Role not set."));
+
+        company.setRoles(Collections.singleton(userRole));
 
         Company result = companyRepository.save(company);
 
@@ -90,7 +98,7 @@ public class AuthController {
                 .buildAndExpand(result.getUsername()).toUri();
 
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "User registered successfully"));
+                .body(new ApiResponse(true, "Company registered successfully"));
     }
 
 

@@ -21,7 +21,7 @@ import java.util.Set;
 public class GroupLevel extends DateAudit {
 
     @Id
-//@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -29,6 +29,7 @@ public class GroupLevel extends DateAudit {
 
     //    @NotNull
 //    private Long score;
+
     @NotNull
     @JsonIgnore
     private Long minscore;

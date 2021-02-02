@@ -21,7 +21,7 @@ import java.util.Set;
 public class GroupLevel extends DateAudit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -39,6 +39,12 @@ public class GroupLevel extends DateAudit {
     @JsonIgnore
     private Long maxscore;
 
+    public GroupLevel(Long id, String levelName, Long minscore, Long maxscore) {
+        this.id = id;
+        this.levelName = levelName;
+        this.minscore = minscore;
+        this.maxscore = maxscore;
+    }
 
     public GroupLevel(Long grouplevel_id) {
         this.id = grouplevel_id;

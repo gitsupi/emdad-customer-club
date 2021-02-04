@@ -7,7 +7,7 @@ import com.salinteam.emdadcustomerclub.payload.ApiResponse;
 import com.salinteam.emdadcustomerclub.payload.GLRequest;
 import com.salinteam.emdadcustomerclub.repository.GroupLevelRepository;
 import com.salinteam.emdadcustomerclub.security.CompanyPrincipal;
-import com.salinteam.emdadcustomerclub.security.CurrentUser;
+import com.salinteam.emdadcustomerclub.security.CurrentCompany;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class GLController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     @PreAuthorize("hasRole('ADMIN_GL')")
     public ResponseEntity<?> addGroupLeves(@Valid @RequestBody List<GLRequest> glRequests,
-                                           @CurrentUser CompanyPrincipal currentUser) {
+                                           @CurrentCompany CompanyPrincipal currentUser) {
 
         if (glRequests.stream().map(glRequest -> glRequest.getLevelName())
                 .collect(Collectors.toList()).stream().distinct().count() != glRequests.size()) {

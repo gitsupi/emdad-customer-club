@@ -8,7 +8,7 @@ import com.salinteam.emdadcustomerclub.payload.UserInfoResponse;
 import com.salinteam.emdadcustomerclub.repository.UserEventLogRepository;
 import com.salinteam.emdadcustomerclub.repository.UserRepository;
 import com.salinteam.emdadcustomerclub.repository.UserTransactionLogRepository;
-import com.salinteam.emdadcustomerclub.security.CurrentUser;
+import com.salinteam.emdadcustomerclub.security.CurrentCompany;
 import com.salinteam.emdadcustomerclub.security.CompanyPrincipal;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class UserController {
     @PostMapping("/user/info/{phonenumber}")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> userinfo(@PathVariable String phonenumber,
-                                        @CurrentUser CompanyPrincipal currentUser) {
+                                        @CurrentCompany CompanyPrincipal currentUser) {
 
         //todo update this way
         User user = userRepository.findByPhonenumber(phonenumber)

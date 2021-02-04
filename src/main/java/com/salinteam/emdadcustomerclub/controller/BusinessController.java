@@ -2,14 +2,12 @@ package com.salinteam.emdadcustomerclub.controller;
 
 import com.salinteam.emdadcustomerclub.exception.ResourceNotFoundException;
 import com.salinteam.emdadcustomerclub.model.*;
-import com.salinteam.emdadcustomerclub.payload.AddNewUserRequest;
-import com.salinteam.emdadcustomerclub.payload.ApiResponse;
-import com.salinteam.emdadcustomerclub.payload.EventUsingRequest;
-import com.salinteam.emdadcustomerclub.payload.TransactionUsingRequest;
+import com.salinteam.emdadcustomerclub.payload.*;
 import com.salinteam.emdadcustomerclub.repository.*;
-import com.salinteam.emdadcustomerclub.security.CurrentUser;
+import com.salinteam.emdadcustomerclub.security.CurrentCompany;
 import com.salinteam.emdadcustomerclub.security.JwtTokenProvider;
 import com.salinteam.emdadcustomerclub.security.CompanyPrincipal;
+import com.salinteam.emdadcustomerclub.service.ScoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +62,7 @@ public class BusinessController {
 
     @GetMapping("/company/me")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
-    public CompanyPrincipal getCurrentUser(@CurrentUser CompanyPrincipal currentUser) {
+    public CompanyPrincipal getCurrentUser(@CurrentCompany CompanyPrincipal currentUser) {
         System.out.println(currentUser);
         return currentUser;
     }
@@ -72,7 +70,7 @@ public class BusinessController {
     @PostMapping("/user/add")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> addnewuser(@Valid @RequestBody AddNewUserRequest addNewUserRequest,
-                                        @CurrentUser CompanyPrincipal currentUser) {
+                                        @CurrentCompany CompanyPrincipal currentUser) {
 
         Optional<User> useropt = userRepository.findByPhonenumber(addNewUserRequest.getPhonenumber());
 
@@ -117,8 +115,6 @@ public class BusinessController {
             return new ResponseEntity(new ApiResponse(true, "User registered successfully"),
                     HttpStatus.OK);
         }
-
-
         User user = new User(addNewUserRequest.getFirstname(),
                 addNewUserRequest.getLastname(),
                 username,
@@ -127,8 +123,6 @@ public class BusinessController {
                 groupLevel.getMinscore().intValue());
 
         user.setGroupLevel(groupLevel);
-
-
         user.setCompanies(Collections.singleton(new Company(currentUser.getId())));
 
 
@@ -142,7 +136,7 @@ public class BusinessController {
     @PostMapping("/event/add")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> addnewevent(@Valid @RequestBody CoEvent coEvent,
-                                         @CurrentUser CompanyPrincipal currentUser) {
+                                         @CurrentCompany CompanyPrincipal currentUser) {
 
         try {
             Company company = new Company();
@@ -159,7 +153,7 @@ public class BusinessController {
     @PostMapping("/event/use")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> useevent(@Valid @RequestBody EventUsingRequest eventUsingRequest,
-                                      @CurrentUser CompanyPrincipal currentUser) {
+                                      @CurrentCompany CompanyPrincipal currentUser) {
 
 
 
@@ -201,21 +195,10 @@ public class BusinessController {
     }
 
 
-    @GetMapping("/dynamictest")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
-    public ResponseEntity<?> test(@CurrentUser CompanyPrincipal currentUser) {
-
-        User byUsername = userRepository.findByPhonenumber("09351844321").get();
-        return ResponseEntity.ok(byUsername.getEventLogs());
-
-
-    }
-
-
     @PostMapping("/transaction/add")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> addnewTrans(@Valid @RequestBody CoTransaction coTransaction,
-                                         @CurrentUser CompanyPrincipal currentUser) {
+                                         @CurrentCompany CompanyPrincipal currentUser) {
 
         try {
             Company company = new Company();
@@ -234,7 +217,7 @@ public class BusinessController {
     @PostMapping("/transaction/use")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
     public ResponseEntity<?> useTrans(@Valid @RequestBody TransactionUsingRequest transactionUsingRequest,
-                                      @CurrentUser CompanyPrincipal currentUser) {
+                                      @CurrentCompany CompanyPrincipal currentUser) {
 
         String userId = transactionUsingRequest.getUserId();
         //todo update this way
@@ -282,6 +265,47 @@ public class BusinessController {
                 .body(new ApiResponse(true, "score added"));
 
     }
+
+
+    @Autowired
+    ScoreService scoreService;
+
+
+    @GetMapping("/user/{phonenumber}/score")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
+    public ResponseEntity<?> userScore(@PathVariable String phonenumber,
+                                      @CurrentCompany CompanyPrincipal companyPrincipal) {
+
+        long userScore = scoreService.getUserScore(phonenumber, companyPrincipal);
+
+        RestResponse<ScoreResponse> scoreResponseRestResponse = new RestResponse<>();
+        scoreResponseRestResponse.setResult(new ScoreResponse(userScore, scoreService.getscoreval(), phonenumber));
+
+        return ResponseEntity.ok()
+                .body(scoreResponseRestResponse);
+
+    }
+
+
+    @PostMapping("/user/{phonenumber}/usescore")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", example = "Bearer access_token")
+    public RestResponse<?> useScore(@PathVariable String phonenumber,
+                                    @Valid @RequestBody ScoreUsing scoreUsing,
+                                      @CurrentCompany CompanyPrincipal companyPrincipal) {
+
+        long userScore = scoreService.getUserScore(phonenumber, companyPrincipal);
+
+
+
+        RestResponse<ScoreResponse> scoreResponseRestResponse = new RestResponse<>();
+        scoreResponseRestResponse.setResult(new ScoreResponse(userScore, scoreService.getscoreval(), phonenumber));
+
+        return scoreResponseRestResponse;
+
+    }
+
+
+
 
 
 }
